@@ -29,3 +29,4 @@ SELECT naziv, COUNT(DISTINCT(igralec.oseba)) AS st_igralcev, COUNT(DISTINCT(rezi
     JOIN vloga AS reziser ON reziser.film = pripada.film
 WHERE igralec.tip = "I" ANd reziser.tip = "R"    
 GROUP BY naziv
+ORDER BY st_igralcev + st_reziserjev DESC;
