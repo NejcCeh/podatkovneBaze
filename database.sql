@@ -57,3 +57,49 @@ CREATE TABLE izvajalci(
 
 INSERT INTO vloge (id, opis) VALUES (0, 'predavatelj');
 INSERT INTO vloge (id, opis) VALUES (1, 'asistent');
+
+--- 3. 
+---prva podnaloga
+
+SELECT kabinet, COUNT(*) AS stevilo_uciteljev
+FROM ucitelji
+WHERE kabinet IS NOT NULL
+GROUP BY kabinet
+ORDER BY stevilo_uciteljev DESC;
+
+---druga podnaloga
+
+SELECT 
+    u1.ime AS ime1, 
+    u1.priimek AS priimek1, 
+    u2.ime AS ime2, 
+    u2.priimek AS priimek2
+FROM 
+    ucitelji u1
+JOIN 
+    ucitelji u2 ON u1.kabinet = u2.kabinet AND u1.id < u2.id
+WHERE 
+    u1.kabinet IS NOT NULL;
+
+--- tretja podnaloga
+
+SELECT 
+    p.ime AS predmet_ime,
+    u1.ime AS ucitelj_ime,
+    u1.priimek AS ucitelj_priimek,
+    u2.ime AS asistent_ime,
+    u2.priimek AS asistent_priimek
+FROM 
+    predmeti p
+JOIN 
+    izvajalci e1 ON p.id = e1.idpredmeta
+JOIN 
+    ucitelji u1 ON e1.iducitelja = u1.id
+JOIN 
+    izvajalci e2 ON p.id = e2.idpredmeta AND e1.iducitelja != e2.iducitelja
+JOIN 
+    ucitelji u2 ON e2.iducitelja = u2.id AND e2.vloga = 1
+WHERE 
+    u1.kabinet IS NOT NULL AND u2.kabinet IS NOT NULL;
+
+
