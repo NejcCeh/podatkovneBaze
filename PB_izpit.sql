@@ -125,7 +125,7 @@ WITH nova AS (SELECT predmeti.id, predmeti.ime, smer FROM predmeti
     INNER JOIN skupine ON skupine.id = predmeti.id)
 
 DELETE FROM nova
-WHERE tip LIKE "S" AND tip NOT LIKE "V" AND tip NOT LIKE "L"; 
+WHERE tip LIKE "S" AND tip NOT LIKE "V" AND tip NOT LIKE "L";  AND
     
 
 
