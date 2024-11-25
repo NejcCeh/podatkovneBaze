@@ -121,11 +121,15 @@ GROUP BY osebe.id, ime, priimek
 
 -- Vrnite ID-je, imena in smeri predmetov, za katere se izvaja
 -- seminar, ne pa tudi avditorne ali laboratorijske vaje
-WITH nova AS (SELECT predmeti.id, predmeti.ime, smer FROM predmeti 
-    INNER JOIN skupine ON skupine.id = predmeti.id)
 
-DELETE FROM nova
-WHERE tip LIKE "S" AND tip NOT LIKE "V" AND tip NOT LIKE "L";  AND
+WITH predmeti_vaje AS (SELECT predmet FROM dodelitve
+    JOIN skupine ON dodelitve.skupina = skupine.id
+WHERE skupine.tip IN ('V','L'))
+
+SELECT DISTINCT predmeti.id, ime, smer FROM predmeti
+    JOIN dodelitve ON predmeti.id = dodelitve.predmet
+    JOIN skupine ON dodelitve.skupina = skupine.id
+WHERE skupine.tip = 'S' AND predmet NOT IN predmeti_vaje;
     
 
 
